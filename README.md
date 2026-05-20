@@ -283,19 +283,6 @@ with $\lambda = 0.6$, $E_{\max} = 50$ W, $B_{\text{crit}} = 0.20$.
 
 ---
 
-## Citation
-
-```bibtex
-@article{bhatia2025deepclean,
-  title={Adaptive Dual-Mode Underwater Trash Detection System},
-  author={Bhatia, Amol and V., Krisvarish and Yadav, Harsh and Jaiswal, Avishkar and Gupta, Shivani and Gupta, Saurav},
-  journal={arXiv preprint},
-  year={2025}
-}
-```
-
----
-
 ## License
 
 MIT License. See [LICENSE](LICENSE) for details.
