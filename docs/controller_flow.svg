@@ -1,0 +1,157 @@
+<svg viewBox="0 0 760 900" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', Arial, sans-serif">
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#455A64"/>
+    </marker>
+    <marker id="arrG" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2E7D32"/>
+    </marker>
+    <marker id="arrR" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#C62828"/>
+    </marker>
+    <filter id="sh"><feDropShadow dx="1" dy="2" stdDeviation="2" flood-opacity="0.18"/></filter>
+  </defs>
+
+  <rect width="760" height="900" fill="#FAFAFA" rx="12"/>
+
+  <!-- Title -->
+  <rect x="0" y="0" width="760" height="48" fill="#263238" rx="12"/>
+  <rect x="0" y="36" width="760" height="12" fill="#263238"/>
+  <text x="380" y="30" text-anchor="middle" fill="white" font-size="16" font-weight="bold">
+    3-Layer Switching Controller — Decision Flow
+  </text>
+
+  <!-- ── START: New Frame ── -->
+  <ellipse cx="380" cy="82" rx="100" ry="24" fill="#37474F" filter="url(#sh)"/>
+  <text x="380" y="87" text-anchor="middle" fill="white" font-size="12" font-weight="bold">New Frame Arrives</text>
+
+  <line x1="380" y1="106" x2="380" y2="128" stroke="#455A64" stroke-width="1.8" marker-end="url(#arr)"/>
+
+  <!-- ── Extract params + CS ── -->
+  <rect x="240" y="130" width="280" height="44" rx="8" fill="#1565C0" filter="url(#sh)"/>
+  <text x="380" y="150" text-anchor="middle" fill="white" font-size="11" font-weight="bold">Extract 20 Params → Compute CS̃(t)</text>
+  <text x="380" y="167" text-anchor="middle" fill="#BBDEFB" font-size="9">EMA smoothing α=0.30 · 13 adaptive weight rules</text>
+
+  <line x1="380" y1="174" x2="380" y2="196" stroke="#455A64" stroke-width="1.8" marker-end="url(#arr)"/>
+
+  <!-- ── Battery check ── -->
+  <polygon points="380,198 500,228 380,258 260,228" fill="#4A148C" filter="url(#sh)"/>
+  <text x="380" y="224" text-anchor="middle" fill="white" font-size="10" font-weight="bold">Battery ≤ B_crit?</text>
+  <text x="380" y="240" text-anchor="middle" fill="#CE93D8" font-size="9">(B_crit = 0.20)</text>
+
+  <!-- Yes → force lightweight -->
+  <line x1="500" y1="228" x2="620" y2="228" stroke="#2E7D32" stroke-width="1.8" marker-end="url(#arrG)"/>
+  <text x="558" y="222" text-anchor="middle" fill="#2E7D32" font-size="9">YES</text>
+  <rect x="622" y="210" width="115" height="36" rx="6" fill="#1B5E20" filter="url(#sh)"/>
+  <text x="680" y="228" text-anchor="middle" fill="white" font-size="9" font-weight="bold">Force YOLOv8n</text>
+  <text x="680" y="241" text-anchor="middle" fill="#A5D6A7" font-size="8">(Energy Override)</text>
+
+  <!-- No → continue -->
+  <line x1="380" y1="258" x2="380" y2="278" stroke="#455A64" stroke-width="1.8" marker-end="url(#arr)"/>
+  <text x="392" y="272" fill="#455A64" font-size="9">NO</text>
+
+  <!-- ── Rate limiter ── -->
+  <polygon points="380,280 500,310 380,340 260,310" fill="#E65100" filter="url(#sh)"/>
+  <text x="380" y="306" text-anchor="middle" fill="white" font-size="10" font-weight="bold">frames_since_sw</text>
+  <text x="380" y="322" text-anchor="middle" fill="white" font-size="10" font-weight="bold">≥ min_switch (30)?</text>
+
+  <!-- No -->
+  <line x1="500" y1="310" x2="620" y2="310" stroke="#C62828" stroke-width="1.8" marker-end="url(#arrR)"/>
+  <text x="558" y="304" text-anchor="middle" fill="#C62828" font-size="9">NO</text>
+  <rect x="622" y="292" width="115" height="36" rx="6" fill="#B71C1C" filter="url(#sh)"/>
+  <text x="680" y="310" text-anchor="middle" fill="white" font-size="9" font-weight="bold">Keep current</text>
+  <text x="680" y="323" text-anchor="middle" fill="#FFCDD2" font-size="8">model unchanged</text>
+
+  <!-- Yes → L1 -->
+  <line x1="380" y1="340" x2="380" y2="360" stroke="#455A64" stroke-width="1.8" marker-end="url(#arr)"/>
+  <text x="392" y="355" fill="#455A64" font-size="9">YES</text>
+
+  <!-- ═══════ LAYER 1 ═══════ -->
+  <rect x="130" y="362" width="500" height="16" rx="4" fill="#0D47A1" opacity="0.15"/>
+  <text x="380" y="374" text-anchor="middle" fill="#0D47A1" font-size="9" font-weight="bold">─── LAYER 1: Asymmetric Hysteresis ───</text>
+
+  <polygon points="380,382 500,412 380,442 260,412" fill="#0D47A1" filter="url(#sh)"/>
+  <text x="380" y="407" text-anchor="middle" fill="white" font-size="10" font-weight="bold">CS̃ &gt; τ_up (0.55)</text>
+  <text x="380" y="423" text-anchor="middle" fill="white" font-size="10" font-weight="bold">AND current = Light?</text>
+
+  <!-- YES → upgrade -->
+  <line x1="500" y1="412" x2="620" y2="412" stroke="#C62828" stroke-width="1.8" marker-end="url(#arrR)"/>
+  <text x="558" y="406" text-anchor="middle" fill="#C62828" font-size="9">YES</text>
+  <rect x="622" y="394" width="115" height="36" rx="6" fill="#B71C1C" filter="url(#sh)"/>
+  <text x="680" y="412" text-anchor="middle" fill="white" font-size="9" font-weight="bold">Switch → YOLOv8x</text>
+  <text x="680" y="425" text-anchor="middle" fill="#FFCDD2" font-size="8">(Layer 1 trigger)</text>
+
+  <line x1="380" y1="442" x2="380" y2="462" stroke="#455A64" stroke-width="1.8" marker-end="url(#arr)"/>
+  <text x="392" y="456" fill="#455A64" font-size="9">NO</text>
+
+  <polygon points="380,464 500,494 380,524 260,494" fill="#0D47A1" filter="url(#sh)"/>
+  <text x="380" y="489" text-anchor="middle" fill="white" font-size="10" font-weight="bold">CS̃ &lt; τ_down (0.40)</text>
+  <text x="380" y="505" text-anchor="middle" fill="white" font-size="10" font-weight="bold">AND current = Heavy?</text>
+
+  <!-- YES → downgrade -->
+  <line x1="260" y1="494" x2="140" y2="494" stroke="#2E7D32" stroke-width="1.8" marker-end="url(#arrG)"/>
+  <text x="202" y="488" text-anchor="middle" fill="#2E7D32" font-size="9">YES</text>
+  <rect x="22" y="476" width="115" height="36" rx="6" fill="#1B5E20" filter="url(#sh)"/>
+  <text x="80" y="494" text-anchor="middle" fill="white" font-size="9" font-weight="bold">Switch → YOLOv8n</text>
+  <text x="80" y="507" text-anchor="middle" fill="#A5D6A7" font-size="8">(Layer 1 trigger)</text>
+
+  <line x1="380" y1="524" x2="380" y2="544" stroke="#455A64" stroke-width="1.8" marker-end="url(#arr)"/>
+  <text x="392" y="538" fill="#455A64" font-size="9">NO (in hysteresis zone)</text>
+
+  <!-- ═══════ LAYER 3 (checked before L2 — faster) ═══════ -->
+  <rect x="130" y="546" width="500" height="16" rx="4" fill="#1B5E20" opacity="0.15"/>
+  <text x="380" y="558" text-anchor="middle" fill="#1B5E20" font-size="9" font-weight="bold">─── LAYER 3: Statistical Stability ───</text>
+
+  <polygon points="380,566 500,596 380,626 260,596" fill="#2E7D32" filter="url(#sh)"/>
+  <text x="380" y="591" text-anchor="middle" fill="white" font-size="10" font-weight="bold">σ(CS̃, W=20) &lt; 0.03</text>
+  <text x="380" y="607" text-anchor="middle" fill="white" font-size="10" font-weight="bold">AND ≥4 stable params?</text>
+
+  <!-- YES → downgrade -->
+  <line x1="260" y1="596" x2="140" y2="596" stroke="#2E7D32" stroke-width="1.8" marker-end="url(#arrG)"/>
+  <text x="202" y="590" text-anchor="middle" fill="#2E7D32" font-size="9">YES</text>
+  <rect x="22" y="578" width="115" height="36" rx="6" fill="#1B5E20" filter="url(#sh)"/>
+  <text x="80" y="596" text-anchor="middle" fill="white" font-size="9" font-weight="bold">Switch → YOLOv8n</text>
+  <text x="80" y="609" text-anchor="middle" fill="#A5D6A7" font-size="8">(Layer 3 trigger)</text>
+
+  <line x1="380" y1="626" x2="380" y2="646" stroke="#455A64" stroke-width="1.8" marker-end="url(#arr)"/>
+  <text x="392" y="640" fill="#455A64" font-size="9">NO</text>
+
+  <!-- ═══════ LAYER 2 ═══════ -->
+  <rect x="130" y="648" width="500" height="16" rx="4" fill="#E65100" opacity="0.15"/>
+  <text x="380" y="660" text-anchor="middle" fill="#E65100" font-size="9" font-weight="bold">─── LAYER 2: Feature Validation ───</text>
+
+  <polygon points="380,668 500,700 380,732 260,700" fill="#E65100" filter="url(#sh)"/>
+  <text x="380" y="694" text-anchor="middle" fill="white" font-size="10" font-weight="bold">Dwell ≥ 50 AND</text>
+  <text x="380" y="710" text-anchor="middle" fill="white" font-size="10" font-weight="bold">≥4 features low (80%)?</text>
+
+  <!-- YES → downgrade -->
+  <line x1="260" y1="700" x2="140" y2="700" stroke="#2E7D32" stroke-width="1.8" marker-end="url(#arrG)"/>
+  <text x="202" y="694" text-anchor="middle" fill="#2E7D32" font-size="9">YES</text>
+  <rect x="22" y="682" width="115" height="36" rx="6" fill="#1B5E20" filter="url(#sh)"/>
+  <text x="80" y="700" text-anchor="middle" fill="white" font-size="9" font-weight="bold">Switch → YOLOv8n</text>
+  <text x="80" y="713" text-anchor="middle" fill="#A5D6A7" font-size="8">(Layer 2 trigger)</text>
+
+  <!-- NO → keep -->
+  <line x1="380" y1="732" x2="380" y2="752" stroke="#455A64" stroke-width="1.8" marker-end="url(#arr)"/>
+  <text x="392" y="746" fill="#455A64" font-size="9">NO</text>
+
+  <!-- ── FINAL OUTPUT ── -->
+  <ellipse cx="380" cy="772" rx="130" ry="26" fill="#263238" filter="url(#sh)"/>
+  <text x="380" y="768" text-anchor="middle" fill="white" font-size="11" font-weight="bold">Keep Current Model</text>
+  <text x="380" y="784" text-anchor="middle" fill="#90A4AE" font-size="9">Run inference · Record metrics · Next frame</text>
+
+  <!-- ── LEGEND ── -->
+  <rect x="20" y="820" width="720" height="68" rx="8" fill="#ECEFF1" stroke="#B0BEC5" stroke-width="1"/>
+  <text x="380" y="840" text-anchor="middle" fill="#37474F" font-size="11" font-weight="bold">Legend</text>
+  <rect x="35" y="850" width="16" height="16" rx="3" fill="#0D47A1"/>
+  <text x="56" y="862" fill="#37474F" font-size="9">Layer 1 (Hysteresis)</text>
+  <rect x="185" y="850" width="16" height="16" rx="3" fill="#E65100"/>
+  <text x="206" y="862" fill="#37474F" font-size="9">Layer 2 (Feature Validation)</text>
+  <rect x="365" y="850" width="16" height="16" rx="3" fill="#2E7D32"/>
+  <text x="386" y="862" fill="#37474F" font-size="9">Layer 3 (Statistical Stability)</text>
+  <rect x="545" y="850" width="16" height="16" rx="3" fill="#4A148C"/>
+  <text x="566" y="862" fill="#37474F" font-size="9">Layer 4 (Adaptive Threshold)</text>
+  <text x="380" y="880" text-anchor="middle" fill="#78909C" font-size="8">
+    Layers 2 and 3 only active when CS̃ is in the hysteresis zone [τ_down, τ_up] with current model = Heavy
+  </text>
+</svg>

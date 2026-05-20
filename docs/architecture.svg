@@ -1,0 +1,133 @@
+<svg viewBox="0 0 900 720" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', Arial, sans-serif">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#546E7A"/>
+    </marker>
+    <marker id="arrowBlue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#1565C0"/>
+    </marker>
+    <marker id="arrowGreen" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2E7D32"/>
+    </marker>
+    <marker id="arrowRed" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#C62828"/>
+    </marker>
+    <filter id="shadow" x="-5%" y="-5%" width="115%" height="115%">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.15"/>
+    </filter>
+    <linearGradient id="headerGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#1A237E;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#283593;stop-opacity:1"/>
+    </linearGradient>
+    <linearGradient id="ctrlGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#E3F2FD;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#BBDEFB;stop-opacity:1"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="720" fill="#F8F9FA" rx="12"/>
+
+  <!-- Title bar -->
+  <rect x="0" y="0" width="900" height="52" fill="url(#headerGrad)" rx="12"/>
+  <rect x="0" y="40" width="900" height="12" fill="url(#headerGrad)"/>
+  <text x="450" y="33" text-anchor="middle" fill="white" font-size="18" font-weight="bold">
+    DeepClean v4 — System Architecture
+  </text>
+
+  <!-- ── INPUT ── -->
+  <rect x="330" y="70" width="240" height="50" rx="8" fill="#263238" filter="url(#shadow)"/>
+  <text x="450" y="91" text-anchor="middle" fill="white" font-size="13" font-weight="bold">Incoming Video Frames</text>
+  <text x="450" y="108" text-anchor="middle" fill="#90A4AE" font-size="10">BGR, 640×480 @ 30 FPS</text>
+
+  <!-- Arrow down -->
+  <line x1="450" y1="120" x2="450" y2="148" stroke="#546E7A" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- ── PARAMETER EXTRACTOR ── -->
+  <rect x="240" y="150" width="420" height="70" rx="8" fill="#37474F" filter="url(#shadow)"/>
+  <text x="450" y="175" text-anchor="middle" fill="white" font-size="13" font-weight="bold">Parameter Extractor</text>
+  <text x="450" y="194" text-anchor="middle" fill="#90A4AE" font-size="10">20 normalised parameters (P1–P20) across 3 categories</text>
+  <text x="450" y="210" text-anchor="middle" fill="#78909C" font-size="9">Scene (P1–P8) · Model Feedback (P9–P14) · Mission Context (P15–P20)</text>
+
+  <!-- Arrow down -->
+  <line x1="450" y1="222" x2="450" y2="248" stroke="#546E7A" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- ── COMPLEXITY SCORE ── -->
+  <rect x="240" y="250" width="420" height="72" rx="8" fill="#1565C0" filter="url(#shadow)"/>
+  <text x="450" y="275" text-anchor="middle" fill="white" font-size="13" font-weight="bold">Complexity Score Computer</text>
+  <text x="450" y="294" text-anchor="middle" fill="#BBDEFB" font-size="10">CS_raw(t) = Σ wᵢ · pᵢ(t)    [13 adaptive weight rules]</text>
+  <text x="450" y="312" text-anchor="middle" fill="#BBDEFB" font-size="10">CS̃(t) = α·CS_raw + (1−α)·CS̃(t−1)    α = 0.30</text>
+
+  <!-- Arrow down -->
+  <line x1="450" y1="324" x2="450" y2="350" stroke="#1565C0" stroke-width="2" marker-end="url(#arrowBlue)"/>
+
+  <!-- ── ADAPTIVE THRESHOLD (Layer 4) — side panel ── -->
+  <rect x="680" y="310" width="195" height="80" rx="8" fill="#4A148C" filter="url(#shadow)"/>
+  <text x="777" y="333" text-anchor="middle" fill="white" font-size="11" font-weight="bold">Layer 4: Adaptive</text>
+  <text x="777" y="350" text-anchor="middle" fill="white" font-size="11" font-weight="bold">Threshold Updater</text>
+  <text x="777" y="368" text-anchor="middle" fill="#CE93D8" font-size="9">τ_down ↔ τ_up updated</text>
+  <text x="777" y="382" text-anchor="middle" fill="#CE93D8" font-size="9">every 100 frames</text>
+  <!-- Connector -->
+  <line x1="660" y1="350" x2="680" y2="350" stroke="#7B1FA2" stroke-width="1.5" stroke-dasharray="4,3"/>
+
+  <!-- ── 3-LAYER CONTROLLER BOX ── -->
+  <rect x="110" y="352" width="620" height="220" rx="10" fill="url(#ctrlGrad)" stroke="#1565C0" stroke-width="2" filter="url(#shadow)"/>
+  <text x="420" y="375" text-anchor="middle" fill="#0D47A1" font-size="14" font-weight="bold">3-Layer Intelligent Switching Controller</text>
+
+  <!-- Layer 1 -->
+  <rect x="130" y="385" width="185" height="75" rx="7" fill="#0D47A1" filter="url(#shadow)"/>
+  <text x="222" y="406" text-anchor="middle" fill="white" font-size="11" font-weight="bold">Layer 1</text>
+  <text x="222" y="422" text-anchor="middle" fill="#90CAF9" font-size="10">Asymmetric Hysteresis</text>
+  <text x="222" y="438" text-anchor="middle" fill="#64B5F6" font-size="9">τ_down = 0.40</text>
+  <text x="222" y="452" text-anchor="middle" fill="#64B5F6" font-size="9">τ_up = 0.55</text>
+
+  <!-- Layer 2 -->
+  <rect x="330" y="385" width="185" height="75" rx="7" fill="#0D47A1" filter="url(#shadow)"/>
+  <text x="422" y="406" text-anchor="middle" fill="white" font-size="11" font-weight="bold">Layer 2</text>
+  <text x="422" y="422" text-anchor="middle" fill="#90CAF9" font-size="10">Feature Validation</text>
+  <text x="422" y="438" text-anchor="middle" fill="#64B5F6" font-size="9">Dwell ≥ 50 frames</text>
+  <text x="422" y="452" text-anchor="middle" fill="#64B5F6" font-size="9">5 scene params</text>
+
+  <!-- Layer 3 -->
+  <rect x="528" y="385" width="185" height="75" rx="7" fill="#0D47A1" filter="url(#shadow)"/>
+  <text x="620" y="406" text-anchor="middle" fill="white" font-size="11" font-weight="bold">Layer 3</text>
+  <text x="620" y="422" text-anchor="middle" fill="#90CAF9" font-size="10">Statistical Stability</text>
+  <text x="620" y="438" text-anchor="middle" fill="#64B5F6" font-size="9">σ_CS &lt; 0.03</text>
+  <text x="620" y="452" text-anchor="middle" fill="#64B5F6" font-size="9">W = 20 frames</text>
+
+  <!-- Rate limiter note -->
+  <rect x="130" y="475" width="580" height="32" rx="5" fill="#E8EAF6" stroke="#7986CB" stroke-width="1"/>
+  <text x="420" y="487" text-anchor="middle" fill="#3949AB" font-size="9" font-weight="bold">Rate Limiter:</text>
+  <text x="420" y="500" text-anchor="middle" fill="#5C6BC0" font-size="9">Minimum 30 frames between consecutive switches · Energy safety override (B_t ≤ 0.20 → force lightweight)</text>
+
+  <!-- Output arrows from controller -->
+  <line x1="290" y1="572" x2="235" y2="610" stroke="#2E7D32" stroke-width="2" marker-end="url(#arrowGreen)"/>
+  <line x1="550" y1="572" x2="665" y2="610" stroke="#C62828" stroke-width="2" marker-end="url(#arrowRed)"/>
+
+  <!-- ── MODEL BOXES ── -->
+  <!-- YOLOv8n -->
+  <rect x="80" y="612" width="220" height="85" rx="9" fill="#1B5E20" filter="url(#shadow)"/>
+  <text x="190" y="637" text-anchor="middle" fill="white" font-size="13" font-weight="bold">YOLOv8n</text>
+  <text x="190" y="655" text-anchor="middle" fill="#A5D6A7" font-size="10">Lightweight Detector</text>
+  <text x="190" y="671" text-anchor="middle" fill="#81C784" font-size="10">3.2 M params · ~18 ms/fr</text>
+  <text x="190" y="687" text-anchor="middle" fill="#81C784" font-size="10">Power: ~15 W</text>
+
+  <!-- YOLOv8x -->
+  <rect x="600" y="612" width="220" height="85" rx="9" fill="#B71C1C" filter="url(#shadow)"/>
+  <text x="710" y="637" text-anchor="middle" fill="white" font-size="13" font-weight="bold">YOLOv8x</text>
+  <text x="710" y="655" text-anchor="middle" fill="#FFCDD2" font-size="10">Heavyweight Detector</text>
+  <text x="710" y="671" text-anchor="middle" fill="#EF9A9A" font-size="10">66.2 M params · ~56 ms/fr</text>
+  <text x="710" y="687" text-anchor="middle" fill="#EF9A9A" font-size="10">Power: ~50 W</text>
+
+  <!-- Labels on arrows -->
+  <text x="232" y="598" text-anchor="middle" fill="#2E7D32" font-size="9">CS̃ &lt; τ_down = 0.40</text>
+  <text x="668" y="598" text-anchor="middle" fill="#C62828" font-size="9">CS̃ &gt; τ_up = 0.55</text>
+
+  <!-- Legend -->
+  <rect x="20" y="640" width="50" height="12" rx="3" fill="#1B5E20"/>
+  <text x="75" y="651" fill="#37474F" font-size="9">Lightweight mode</text>
+  <rect x="20" y="658" width="50" height="12" rx="3" fill="#B71C1C"/>
+  <text x="75" y="669" fill="#37474F" font-size="9">Heavyweight mode</text>
+  <rect x="20" y="676" width="50" height="12" rx="3" fill="#4A148C"/>
+  <text x="75" y="687" fill="#37474F" font-size="9">Adaptive threshold</text>
+</svg>
