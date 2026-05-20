@@ -301,14 +301,3 @@ with $\lambda = 0.6$, $E_{\max} = 50$ W, $B_{\text{crit}} = 0.20$.
 MIT License. See [LICENSE](LICENSE) for details.
 
 ---
-
-## Contributors
-
-| Name | Role |
-|---|---|
-| Amol Bhatia | System design, controller architecture, paper |
-| Krisvarish V. | Hardware integration, sensor fusion, paper |
-| Harsh Yadav | Dataset curation, training pipeline, paper |
-| Avishkar Jaiswal | Evaluation framework, statistical analysis, paper |
-| Shivani Gupta | Image enhancement, visualisation, paper |
-| Saurav Gupta | Project supervision, paper |

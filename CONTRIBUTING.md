@@ -121,10 +121,3 @@ notebooks/      ← Colab notebook (keep in sync with run_adaptive_test.py)
 ```
 
 ---
-
-## Maintainers
-
-- Amol Bhatia — framework design, paper
-- Krisvarish V. — hardware integration, experiments
-
-Questions? Open an Issue or start a Discussion on GitHub.
