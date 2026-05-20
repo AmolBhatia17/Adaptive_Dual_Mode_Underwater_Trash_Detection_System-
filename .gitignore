@@ -1,0 +1,66 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb~
+
+# Model weights (too large for git — use Git LFS or DVC)
+*.pt
+*.pth
+*.onnx
+*.engine
+*.trt
+
+# Dataset raw files (download via scripts)
+datasets/raw/
+datasets/merged/
+datasets/coco_raw/
+
+# Training outputs
+training/results/*/
+runs/
+
+# Evaluation outputs
+evaluation/results/*.png
+evaluation/results/*.csv
+
+# Generated video
+synthetic_underwater.mp4
+results/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Wandb / MLflow
+wandb/
+mlruns/
+
+# Secrets & credentials
+*.env
+.env
+api_keys.txt
+roboflow_key.txt
